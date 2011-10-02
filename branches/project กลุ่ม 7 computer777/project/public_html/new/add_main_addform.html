@@ -1,0 +1,62 @@
+<html>
+<head>
+<title></title>
+<script language="JavaScript" type="text/JavaScript">
+<!--
+function MM_jumpMenu(targ,selObj,restore){ //v3.0
+  eval(targ+".location='"+selObj.options[selObj.selectedIndex].value+"'");
+  if (restore) selObj.selectedIndex=0;
+}
+//-->
+</script>
+</head>
+<body>
+<form action="phpMySQLAddSave.php" name="frmAdd" method="post">
+Select Line : 
+<select name="menu1" onChange="MM_jumpMenu('parent',this,0)">
+<?
+for($i=1;$i<=50;$i++)
+{
+	if($_GET["Line"] == $i)
+	{
+		$sel = "selected";
+	}
+	else
+	{
+		$sel = "";
+	}
+?>
+	<option value="<?=$_SERVER["PHP_SELF"];?>?Line=<?=$i;?>" <?=$sel;?>><?=$i;?></option>
+<?
+}
+?>
+</select>
+<table width="600" border="1">
+  <tr>
+    <th width="91"> <div align="center">barcode</div></th>
+    <th width="160"> <div align="center">type</div></th>
+    <th width="198"> <div align="center">brand</div></th>
+    <th width="97"> <div align="center">descp</div></th>
+
+  </tr>
+  <?
+  $line = $_GET["Line"];
+  if($line == 0){$line=1;}
+  for($i=1;$i<=$line;$i++)
+  {
+  ?>
+  <tr>
+    <td><div align="center"><input type="text" name="txtBarcode<?=$i;?>" size="5"></div></td>
+    <td><input type="text" name="txtType<?=$i;?>" size="20"></td>
+    <td><input type="text" name="txtBrand<?=$i;?>" size="20"></td>
+    <td><div align="center"><input type="text" name="txtDescp<?=$i;?>" size="2"></div></td>
+  </tr>
+  <?
+  }
+  ?>
+  </table>
+  <input type="submit" name="submit" value="submit">
+  <input type="hidden" name="hdnLine" value="<?=$i;?>">
+  </form>
+</body>
+</html>

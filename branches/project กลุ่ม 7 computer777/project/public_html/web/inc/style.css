@@ -1,0 +1,56 @@
+body{font-size:120%;}
+
+/**************** Top Sliding Panel *********************/
+* {margin:0; padding:0; outline:0;}
+#slide-panel{ background-color:#000;border-bottom-style:solid;border-bottom-width:2px;display:none;height:100px;margin:auto;}
+.slide {width:950px; margin:auto;}
+.btn-slide:link, .btn-slide:visited{color:#fff; float:right; display:block;font-size:14px; text-transform:uppercase; font-weight:bold;height:26px; padding:3px 0 3px 0;line-height:22px;text-align:center;text-decoration:none;width:100px; background-color:#000; font-family:Arial;}
+
+.btn-slide1:link, .btn-slide1:visited{color:#fff; /*float:left; */display:inline-block; font-size:14px; text-transform:uppercase; font-weight:bold;height:26px; padding:3px 0 3px 0;line-height:22px;text-align:center;text-decoration:none;width:100px; background-color:#000; font-family:Arial;}
+
+.loginform {width:950px; margin:auto;  color:#999; font-family:Arial, Helvetica, sans-serif;}
+.formdetails {color:#FFF; font-size:12px;padding:5px;}
+.formdetails input{border:none; padding:2px 5px 2px 5px; background-color:#EFEFEF;}
+.loginregister {color:#999; padding:5px;}
+.loginregister a:link, .loginregister a:visited {color:#FFF; font-size:11px; text-decoration:underline;}
+.loginform h2 {padding:10px 10px 10px 0; font-size:18px; font-weight:normal; text-transform:uppercase;}
+.loginform ul li {display:inline;}
+.loginform ul li a:link, .loginform ul li a:visited {color:#FFF; font-size:12px; text-decoration:underline;}
+
+input.btn { 
+color:#050; 
+font: bold 84% 'trebuchet ms',helvetica,sans-serif; 
+background-color:#fed; 
+border: 1px solid; 
+border-color: #696 #363 #363 #696; 
+filter:progid:DXImageTransform.Microsoft.Gradient 
+ (GradientType=0,StartColorStr='#ffffffff',EndColorStr='#ffeeddaa'); 
+} 
+
+/************************** Form Input ************************************/
+form label{
+	float: middle;
+	text-align: left;
+	width: 120px;
+}
+input, textarea, select {
+	padding: 2px;
+	margin: 2px;
+}
+input[type="text"], input[type="password"], textarea {
+	border: 1px solid #CCCCCC;
+}
+input[type="text"]:focus, input[type="password"]:focus, textarea:focus {
+	border: 1px solid #0033FF;
+}
+ 
+form.required{
+ 
+}
+ 
+label.error {
+	float:none;
+	color: red;
+	font-style: italic;
+	display:none;
+}
