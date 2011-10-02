@@ -1,0 +1,1419 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0044)http://course.swu.ac.th/content.php?cid=2740 -->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="th"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>SWU Course Web : File Allocation</title>
+	
+	<meta name="Generator" content="ATutor - Copyright 2005 by http://atutor.ca">
+	<!--<base href="http://course.swu.ac.th/get.php/">--><base href=".">
+	<link rel="shortcut icon" href="http://course.swu.ac.th/favicon.ico" type="image/x-icon">
+	<link rel="stylesheet" href="./SWU Course Web   File Allocation_files/print.css" type="text/css" media="print">
+	<link rel="stylesheet" href="./SWU Course Web   File Allocation_files/styles.css" type="text/css">
+	<!--[if IE]>
+	  <link rel="stylesheet" href="/themes/default/ie_styles.css" type="text/css" />
+	<![endif]-->
+	<link rel="stylesheet" href="./SWU Course Web   File Allocation_files/forms.css" type="text/css">
+	<script src="./SWU Course Web   File Allocation_files/InfusionAll.js" type="text/javascript"></script>
+	<script src="./SWU Course Web   File Allocation_files/jquery.autoHeight.js" type="text/javascript"></script>
+	<script language="javascript" type="text/javascript">
+	//<!--
+	jQuery.noConflict();
+	//-->
+	</script>
+<link rel="stylesheet" href="./SWU Course Web   File Allocation_files/InlineEdit.css" type="text/css">
+
+	<script language="javascript" type="text/javascript">
+	//<!--
+	jQuery(function() {
+	jQuery('a.tooltip').tooltip( { showBody: ": ", showURL: false } );
+	} );
+	//-->
+	</script>
+
+</head>
+<body onload="">
+<script language="javascript" type="text/javascript">
+//<!--
+var newwindow;
+function poptastic(url) {
+	newwindow=window.open(url,'popup','height=600,width=600,scrollbars=yes,resizable=yes');
+	if (window.focus) {newwindow.focus()}
+}
+
+function getexpirydate(nodays){
+	var UTCstring;
+	Today = new Date();
+	nomilli=Date.parse(Today);
+	Today.setTime(nomilli+nodays*24*60*60*1000);
+	UTCstring = Today.toUTCString();
+	return UTCstring;
+}
+
+function setcookie(name,value,duration){
+	cookiestring=name+"="+escape(value)+";path=/;expires="+getexpirydate(duration);
+	document.cookie=cookiestring;
+	if(!getcookie(name)){
+		return false;
+	} else {
+		return true;
+	}
+}
+
+function getcookie(cookiename) {
+	var cookiestring=""+document.cookie;
+	var index1=cookiestring.indexOf(cookiename);
+	if (index1==-1 || cookiename=="") return ""; 
+	var index2=cookiestring.indexOf(';',index1);
+	if (index2==-1) index2=cookiestring.length; 
+	return unescape(cookiestring.substring(index1+cookiename.length+1,index2));
+}
+
+function setDisplay(objId) {
+	var toc = document.getElementById(objId);
+
+	var state = getcookie(objId);
+	if (document.getElementById(objId) && state && (state == 'none')) {
+		toggleToc(objId);
+	}
+}
+
+
+function setstates() {
+	return;
+	var objId = "side-menu";
+	var state = getcookie(objId);
+	if (document.getElementById(objId) && state && (state == 'none')) {
+		toggleToc(objId);
+	}
+
+	var objId = "toccontent";
+	var state = getcookie(objId);
+	if (document.getElementById(objId) && state && (state == 'none')) {
+		toggleToc(objId);
+	}
+
+}
+
+function showTocToggle(objId, show, hide, key, selected) {
+	if(document.getElementById) {
+		if (key) {
+			var accesskey = " accesskey='" + key + "' title='"+ show + "/" + hide + " Alt - "+ key +"'";
+		} else {
+			var accesskey = "";
+		}
+
+		if (selected == 'hide') {
+			document.writeln('<a href="javascript:toggleToc(\'' + objId + '\')" ' + accesskey + '>' +
+			'<span id="' + objId + 'showlink" style="display:none;">' + show + '</span>' +
+			'<span id="' + objId + 'hidelink">' + hide + '</span>'	+ '</a>');
+		} else {
+			document.writeln('<a href="javascript:toggleToc(\'' + objId + '\')" ' + accesskey + '>' +
+			'<span id="' + objId + 'showlink">' + show + '</span>' +
+			'<span id="' + objId + 'hidelink" style="display:none;">' + hide + '</span>'	+ '</a>');
+		}
+	}
+}
+
+function toggleToc(objId) {
+	var toc = document.getElementById(objId);
+	if (toc == null) {
+		return;
+	}
+	var showlink=document.getElementById(objId + 'showlink');
+	var hidelink=document.getElementById(objId + 'hidelink');
+
+	if (hidelink.style.display == 'none') {
+		document.getElementById('contentcolumn').id="contentcolumn_shiftright";
+		jQuery("[id="+objId+"]").slideDown("slow");
+		hidelink.style.display='';
+		showlink.style.display='none';
+	} else {
+		document.getElementById('contentcolumn_shiftright').id="contentcolumn";
+		jQuery("[id="+objId+"]").slideUp("slow");
+		hidelink.style.display='none';
+		showlink.style.display='';
+	}
+	setcookie(objId, hidelink.style.display, 1);
+}
+
+// toggle content folder in side menu "content navigation"
+function toggleFolder(cid)
+{
+	if (jQuery("#tree_icon"+cid).attr("src") == tree_collapse_icon) {
+		jQuery("#tree_icon"+cid).attr("src", tree_expand_icon);
+		jQuery("#tree_icon"+cid).attr("alt", "ขยาย");
+		setcookie("c225_"+cid, null, 1);
+	}
+	else {
+		jQuery("#tree_icon"+cid).attr("src", tree_collapse_icon);
+		jQuery("#tree_icon"+cid).attr("alt", "ยุบลง");
+		setcookie("c225_"+cid, "1", 1);
+	}
+	
+	jQuery("#folder"+cid).slideToggle();
+}
+
+// toggle elements in side menu
+function elementToggle(elem, title)
+{
+	element_collapse_icon = "/images/mswitch_minus.gif";
+	element_expand_icon = "/images/mswitch_plus.gif";
+	
+	if (jQuery(elem).attr("src") == element_collapse_icon) {
+		jQuery(elem).attr("src", element_expand_icon);
+		jQuery(elem).attr("alt", "แสดง "+ title);
+		jQuery(elem).attr("title", "แสดง "+ title);
+		setcookie("m_"+title, 0, 1);
+	}
+	else {
+		jQuery(elem).attr("src", element_collapse_icon);
+		jQuery(elem).attr("alt", "ยุบลง");
+		jQuery(elem).attr("alt", "ซ่อน "+ title);
+		jQuery(elem).attr("title", "ซ่อน "+ title);
+		setcookie("m_"+title, null, 1);;
+	}
+	
+	jQuery(elem).parent().next().slideToggle();
+}
+
+function printSubmenuHeader(title)
+{
+	if (getcookie("m_"+title) == "0")
+	{
+		image = "/images/mswitch_plus.gif";
+		alt_text = "แสดง " + title;
+	}
+	else
+	{
+		image = "/images/mswitch_minus.gif";
+		alt_text = "ซ่อน " + title;
+	}
+	
+	document.writeln('<h4 class="box">'+
+	'	<input src="'+image+'"' + 
+	'	       onclick="elementToggle(this, \''+title+'\'); return false;"' +
+	'	       alt="'+ alt_text + '" ' +
+	'	       title="'+ alt_text + '"' +
+	'	       style="float:right" type="image" /> '+ title +
+	'</h4>');
+}
+//-->
+</script>
+<div class="page_wrapper">
+<div id="header">
+	<a href="http://course.swu.ac.th/content.php?cid=2740#content" accesskey="c">
+	<img src="./SWU Course Web   File Allocation_files/clr.gif" height="1" width="1" border="0" alt="ไปยังเนื้อหา ALT+c"></a>		
+
+	<a href="http://course.swu.ac.th/content.php?cid=2740#menu2740" accesskey="m"><img src="./SWU Course Web   File Allocation_files/clr.gif" height="1" width="1" border="0" alt="ไปที่เมนู ALT+m"></a>
+	<div id="top-links"> <!-- top help/search/login links -->
+								<!-- start the jump menu -->
+							<form method="post" action="http://course.swu.ac.th/bounce.php" target="_top">
+						<label for="jumpmenu" accesskey="j"></label>
+				<select name="course" id="jumpmenu" title="ไป:  Alt-j">							
+					<option value="0">หน้าแรกเริ่ม</option>
+					<optgroup label="รายวิชาที่เลือกแล้ว">
+													<option value="225">CP323 B01 ระบบปฏิบัติ...</option>
+													<option value="35">CP 342 (B01) DATABASE SYSTEM</option>
+													<option value="151">CP482 Algorithms</option>
+													<option value="62">CP 999 Major of Computer Science</option>
+													<option value="87">MA 221 (B03) Elementary Linear Algebra 1/54</option>
+											</optgroup>
+				</select> <input type="submit" name="jump" value="ไป" class="button"> </form>
+			<!-- /end the jump menu -->
+			
+			
+												<a href="http://course.swu.ac.th/inbox/index.php">กล่องจดหมายเข้า</a>
+														<a href="http://course.swu.ac.th/search.php">ค้นหา</a> 
+				<a href="http://course.swu.ac.th/help/index.php">ระบบช่วยเหลือ</a>
+	</div>
+	
+
+
+		<!-- section title -->
+	<div style="font-size:small;font-weight:bold;padding-left:1em;color:white;">SWU Course Web</div>	<h1 id="section-title">CP323 B01 ระบบปฏิบัติ...			</h1>
+
+
+</div>
+
+<div id="topnavlistcontainer">
+<!-- the main navigation. in our case, tabs -->
+	<ul id="topnavlist">
+																				<li><a href="http://course.swu.ac.th/index.php" accesskey="1" title="หน้าแรก Alt+1" class="active">หน้าแรก</a></li>
+																								<li><a href="http://course.swu.ac.th/forum/list.php" accesskey="2" title="กระดานสนทนา Alt+2">กระดานสนทนา</a></li>
+																								<li><a href="http://course.swu.ac.th/file_storage/index.php" accesskey="3" title="ที่จัดเก็บไฟล์ Alt+3">ที่จัดเก็บไฟล์</a></li>
+									</ul>
+</div>
+
+<div style="background-color:#E6E6E6; font-size:0.85em; padding-top: 5px; border-bottom:1px solid black; height:2em;">
+	<!-- the sub navigation -->
+	<div style="float: right; padding-right: 5px; text-transform: lowercase;">
+							
+			<strong>ภูมิ  รถกิจ</strong> | <a href="http://course.swu.ac.th/logout.php">ยุติ</a>
+			</div>
+
+			<!-- <div id="sub-navigation">
+			&nbsp;
+		</div> -->
+	</div>
+
+<div style="padding:3px;">
+	<!-- the bread crumbs -->
+	<div id="breadcrumbs">
+					<a href="http://course.swu.ac.th/bounce.php?course=0">หน้าแรกเริ่ม</a> &gt; 
+					<a href="http://course.swu.ac.th/index.php">CP323 B01 ระบบปฏิบัติการ </a> &gt; 
+					<a href="http://course.swu.ac.th/index.php">หน้าแรก</a> &gt; 
+		 File Allocation	</div>
+
+	</div>
+
+
+<div id="contentwrapper">
+			<div id="leftcolumn">
+			<script type="text/javascript">
+			//<![CDATA[
+			var state = getcookie("side-menu");
+			if (state && (state == 'none')) {
+				document.writeln('<a name="menu"></a><div style="display:none;" id="side-menu">');
+			} else {
+				document.writeln('<a name="menu"></a><div id="side-menu">');
+			}
+			//]]>
+			</script><a name="menu"></a><div id="side-menu">
+
+
+			
+			
+<br>
+<script language="javascript" type="text/javascript">
+	printSubmenuHeader("ไกด์ไลน์");
+</script><h4 class="box">	<input src="./SWU Course Web   File Allocation_files/mswitch_minus.gif" onclick="elementToggle(this, &#39;ไกด์ไลน์&#39;); return false;" alt="ซ่อน ไกด์ไลน์" title="ซ่อน ไกด์ไลน์" style="float:right" type="image"> ไกด์ไลน์</h4>
+
+
+<div class="box" id="menu_ไกด์ไลน์">
+	<div style="white-space:nowrap;"><a href="http://course.swu.ac.th/index.php">หน้าแรก</a><br><div id="editable_table"><div id="folder0">
+<span>
+<img src="./SWU Course Web   File Allocation_files/tree_split.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_horizontal.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+ <a href="http://course.swu.ac.th/content.php?cid=2685" title="แนะนำผู้สอนและวิชา"><span class="inlineEdits" id="menu-2685" title="แนะนำผู้สอนและวิชา">1&nbsp;แนะนำผู้สอนและวิชา</span></a>
+<br></span>
+
+<span>
+<img src="./SWU Course Web   File Allocation_files/tree_split.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_horizontal.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+ <a href="http://course.swu.ac.th/content.php?cid=2765" title="เค้าโครงการเรียนการสอน 1/2554"><span class="inlineEdits" id="menu-2765" title="เค้าโครงการเรียนการสอน 1/2554">2&nbsp;เค้าโครงการเรียนการสอน 1/2554</span></a>
+<br></span>
+
+<span>
+<img src="./SWU Course Web   File Allocation_files/tree_split.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_horizontal.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+ <a href="http://course.swu.ac.th/content.php?cid=2687" title="สื่อการสอนแบบเคลื่อนไหว OS Tutorail"><span class="inlineEdits" id="menu-2687" title="สื่อการสอนแบบเคลื่อนไหว OS Tutorail">3&nbsp;สื่อการสอนแบบเคลื่อนไหว O...</span></a>
+<br></span>
+
+<span>
+<img src="./SWU Course Web   File Allocation_files/tree_split.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_horizontal.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+ <a href="http://course.swu.ac.th/content.php?cid=2688" title="แนะนำวิชา"><span class="inlineEdits" id="menu-2688" title="แนะนำวิชา">4&nbsp;แนะนำวิชา</span></a>
+<br></span>
+
+<span>
+<img src="./SWU Course Web   File Allocation_files/tree_split.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<a href="javascript:void(0)" onclick="javascript: toggleFolder(&#39;2742&#39;); "><img src="./SWU Course Web   File Allocation_files/tree_expand.gif" id="tree_icon2742" alt="ขยาย" border="0" width="16" height="16" title="ขยาย" class="img-size-tree"></a>
+<span style="cursor:pointer" onclick="javascript: toggleFolder(&#39;2742&#39;); ">
+<span class="inlineEdits" id="menu-2742" title="2. บทที่ 1 ระบบคอมพิวเตอร์">5&nbsp;2. บทที่ 1 ระบบคอมพิวเตอร์</span></span>
+
+<br></span>
+
+<div id="folder2742" style="display: none; ">
+<span>
+<img src="./SWU Course Web   File Allocation_files/tree_vertline.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_split.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_horizontal.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+ <a href="http://course.swu.ac.th/content.php?cid=2689" title="2. บทที่ 1 ระบบคอมพิวเตอร์"><span class="inlineEdits" id="menu-2689" title="2. บทที่ 1 ระบบคอมพิวเตอร์">5.1&nbsp;2. บทที่ 1 ระบบคอมพิว...</span></a>
+<br></span>
+
+<span>
+<img src="./SWU Course Web   File Allocation_files/tree_vertline.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_split.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_horizontal.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+ <a href="http://course.swu.ac.th/content.php?cid=2708" title="กรณีศึกษาเรื่อง System Resources"><span class="inlineEdits" id="menu-2708" title="กรณีศึกษาเรื่อง System Resources">5.2&nbsp;กรณีศึกษาเรื่อง Syste...</span></a>
+<br></span>
+
+<span>
+<img src="./SWU Course Web   File Allocation_files/tree_vertline.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_split.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_horizontal.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+ <a href="http://course.swu.ac.th/content.php?cid=2709" title="แบบฝึกหัดที่ 1 ทบทวนความรู้ระบบคอมพิวเตอร์"><span class="inlineEdits" id="menu-2709" title="แบบฝึกหัดที่ 1 ทบทวนความรู้ระบบคอมพิวเตอร์">5.3&nbsp;แบบฝึกหัดที่ 1 ทบทวนค...</span></a>
+<br></span>
+
+<span>
+<img src="./SWU Course Web   File Allocation_files/tree_vertline.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_split.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_horizontal.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+ <a href="http://course.swu.ac.th/content.php?cid=2710" title="แบบฝึกหัดที่ 2 ข่าวสารระบบ"><span class="inlineEdits" id="menu-2710" title="แบบฝึกหัดที่ 2 ข่าวสารระบบ">5.4&nbsp;แบบฝึกหัดที่ 2 ข่าวสา...</span></a>
+<br></span>
+
+<span>
+<img src="./SWU Course Web   File Allocation_files/tree_vertline.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_end.gif" alt="" border="0" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_horizontal.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+ <a href="http://course.swu.ac.th/content.php?cid=2711" title="รูปเพิ่มเติม"><span class="inlineEdits" id="menu-2711" title="รูปเพิ่มเติม">5.5&nbsp;รูปเพิ่มเติม</span></a>
+<br></span>
+
+</div>
+
+<span>
+<img src="./SWU Course Web   File Allocation_files/tree_split.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<a href="javascript:void(0)" onclick="javascript: toggleFolder(&#39;2743&#39;); "><img src="./SWU Course Web   File Allocation_files/tree_expand.gif" id="tree_icon2743" alt="ขยาย" border="0" width="16" height="16" title="ขยาย" class="img-size-tree"></a>
+<span style="cursor:pointer" onclick="javascript: toggleFolder(&#39;2743&#39;); ">
+<span class="inlineEdits" id="menu-2743" title="3. บทที่ 2 โปรแกรมระบบ และยูติลิตี้">6&nbsp;3. บทที่ 2 โปรแกรมระบบ...</span></span>
+
+<br></span>
+
+<div id="folder2743" style="display: none; ">
+<span>
+<img src="./SWU Course Web   File Allocation_files/tree_vertline.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_split.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_horizontal.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+ <a href="http://course.swu.ac.th/content.php?cid=2690" title="3. บทที่ 2 โปรแกรมระบบ และยูติลิตี้"><span class="inlineEdits" id="menu-2690" title="3. บทที่ 2 โปรแกรมระบบ และยูติลิตี้">6.1&nbsp;3. บทที่ 2 โปรแกรมระบ...</span></a>
+<br></span>
+
+<span>
+<img src="./SWU Course Web   File Allocation_files/tree_vertline.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_split.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_horizontal.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+ <a href="http://course.swu.ac.th/content.php?cid=2712" title="กรณีศึกษา Java Virtual Machine"><span class="inlineEdits" id="menu-2712" title="กรณีศึกษา Java Virtual Machine">6.2&nbsp;กรณีศึกษา Java Virtua...</span></a>
+<br></span>
+
+<span>
+<img src="./SWU Course Web   File Allocation_files/tree_vertline.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_split.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_horizontal.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+ <a href="http://course.swu.ac.th/content.php?cid=2713" title=".NET Framework Platform"><span class="inlineEdits" id="menu-2713" title=".NET Framework Platform">6.3&nbsp;.NET Framework Platform</span></a>
+<br></span>
+
+<span>
+<img src="./SWU Course Web   File Allocation_files/tree_vertline.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_end.gif" alt="" border="0" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_horizontal.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+ <a href="http://course.swu.ac.th/content.php?cid=6783" title="compiler"><span class="inlineEdits" id="menu-6783" title="compiler">6.4&nbsp;compiler</span></a>
+<br></span>
+
+</div>
+
+<span>
+<img src="./SWU Course Web   File Allocation_files/tree_split.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<a href="javascript:void(0)" onclick="javascript: toggleFolder(&#39;2744&#39;); "><img src="./SWU Course Web   File Allocation_files/tree_expand.gif" id="tree_icon2744" alt="ขยาย" border="0" width="16" height="16" title="ขยาย" class="img-size-tree"></a>
+<span style="cursor:pointer" onclick="javascript: toggleFolder(&#39;2744&#39;); ">
+<span class="inlineEdits" id="menu-2744" title="4. บทที่ 3 ระบบปฏิบัติการ">7&nbsp;4. บทที่ 3 ระบบปฏิบัติการ</span></span>
+
+<br></span>
+
+<div id="folder2744" style="display: none; ">
+<span>
+<img src="./SWU Course Web   File Allocation_files/tree_vertline.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_split.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_horizontal.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+ <a href="http://course.swu.ac.th/content.php?cid=2691" title="4. บทที่ 3 ระบบปฏิบัติการ"><span class="inlineEdits" id="menu-2691" title="4. บทที่ 3 ระบบปฏิบัติการ">7.1&nbsp;4. บทที่ 3 ระบบปฏิบัติการ</span></a>
+<br></span>
+
+<span>
+<img src="./SWU Course Web   File Allocation_files/tree_vertline.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_split.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_horizontal.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+ <a href="http://course.swu.ac.th/content.php?cid=2714" title="Assignment 2 อธิบายความหมายของคำ"><span class="inlineEdits" id="menu-2714" title="Assignment 2 อธิบายความหมายของคำ">7.2&nbsp;Assignment 2 อธิบายคว...</span></a>
+<br></span>
+
+<span>
+<img src="./SWU Course Web   File Allocation_files/tree_vertline.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_end.gif" alt="" border="0" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_horizontal.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+ <a href="http://course.swu.ac.th/content.php?cid=2715" title="DLL คืออะไร"><span class="inlineEdits" id="menu-2715" title="DLL คืออะไร">7.3&nbsp;DLL คืออะไร</span></a>
+<br></span>
+
+</div>
+
+<span>
+<img src="./SWU Course Web   File Allocation_files/tree_split.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<a href="javascript:void(0)" onclick="javascript: toggleFolder(&#39;2745&#39;); "><img src="./SWU Course Web   File Allocation_files/tree_expand.gif" id="tree_icon2745" alt="ขยาย" border="0" width="16" height="16" title="ขยาย" class="img-size-tree"></a>
+<span style="cursor:pointer" onclick="javascript: toggleFolder(&#39;2745&#39;); ">
+<span class="inlineEdits" id="menu-2745" title="5. บทที่ 4 Process Thread SMP Microkernel">8&nbsp;5. บทที่ 4 Process Thr...</span></span>
+
+<br></span>
+
+<div id="folder2745" style="display: none; ">
+<span>
+<img src="./SWU Course Web   File Allocation_files/tree_vertline.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_split.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_horizontal.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+ <a href="http://course.swu.ac.th/content.php?cid=2692" title="5. บทที่ 4 Process Thread SMP Microkernel"><span class="inlineEdits" id="menu-2692" title="5. บทที่ 4 Process Thread SMP Microkernel">8.1&nbsp;5. บทที่ 4 Process Th...</span></a>
+<br></span>
+
+<span>
+<img src="./SWU Course Web   File Allocation_files/tree_vertline.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_end.gif" alt="" border="0" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_horizontal.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+ <a href="http://course.swu.ac.th/content.php?cid=2718" title="อ่านเพิ่มเติม"><span class="inlineEdits" id="menu-2718" title="อ่านเพิ่มเติม">8.2&nbsp;อ่านเพิ่มเติม</span></a>
+<br></span>
+
+</div>
+
+<span>
+<img src="./SWU Course Web   File Allocation_files/tree_split.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<a href="javascript:void(0)" onclick="javascript: toggleFolder(&#39;2746&#39;); "><img src="./SWU Course Web   File Allocation_files/tree_expand.gif" id="tree_icon2746" alt="ขยาย" border="0" width="16" height="16" title="ขยาย" class="img-size-tree"></a>
+<span style="cursor:pointer" onclick="javascript: toggleFolder(&#39;2746&#39;); ">
+<span class="inlineEdits" id="menu-2746" title="6. บทที่ 5 การจัดการโปรเซส">9&nbsp;6. บทที่ 5 การจัดการโปรเซส</span></span>
+
+<br></span>
+
+<div id="folder2746" style="display: none; ">
+<span>
+<img src="./SWU Course Web   File Allocation_files/tree_vertline.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_split.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_horizontal.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+ <a href="http://course.swu.ac.th/content.php?cid=2693" title="6. บทที่ 5 การจัดการโปรเซส"><span class="inlineEdits" id="menu-2693" title="6. บทที่ 5 การจัดการโปรเซส">9.1&nbsp;6. บทที่ 5 การจัดการโ...</span></a>
+<br></span>
+
+<span>
+<img src="./SWU Course Web   File Allocation_files/tree_vertline.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_split.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_horizontal.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+ <a href="http://course.swu.ac.th/content.php?cid=2716" title="Default Processes in Windows 2000"><span class="inlineEdits" id="menu-2716" title="Default Processes in Windows 2000">9.2&nbsp;Default Processes in...</span></a>
+<br></span>
+
+<span>
+<img src="./SWU Course Web   File Allocation_files/tree_vertline.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_end.gif" alt="" border="0" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_horizontal.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+ <a href="http://course.swu.ac.th/content.php?cid=2717" title="แบบฝึกหัด 3 เรื่องโปรเซส"><span class="inlineEdits" id="menu-2717" title="แบบฝึกหัด 3 เรื่องโปรเซส">9.3&nbsp;แบบฝึกหัด 3 เรื่องโปรเซส</span></a>
+<br></span>
+
+</div>
+
+<span>
+<img src="./SWU Course Web   File Allocation_files/tree_split.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<a href="javascript:void(0)" onclick="javascript: toggleFolder(&#39;2747&#39;); "><img src="./SWU Course Web   File Allocation_files/tree_expand.gif" id="tree_icon2747" alt="ขยาย" border="0" width="16" height="16" title="ขยาย" class="img-size-tree"></a>
+<span style="cursor:pointer" onclick="javascript: toggleFolder(&#39;2747&#39;); ">
+<span class="inlineEdits" id="menu-2747" title="7. บทที่ 6 การจัดเวลาซีพียู">10&nbsp;7. บทที่ 6 การจัดเวลาซ...</span></span>
+
+<br></span>
+
+<div id="folder2747" style="display: none; ">
+<span>
+<img src="./SWU Course Web   File Allocation_files/tree_vertline.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_split.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_horizontal.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+ <a href="http://course.swu.ac.th/content.php?cid=2694" title="7. บทที่ 6 การจัดเวลาซีพียู"><span class="inlineEdits" id="menu-2694" title="7. บทที่ 6 การจัดเวลาซีพียู">10.1&nbsp;7. บทที่ 6 การจัดเวลา...</span></a>
+<br></span>
+
+<span>
+<img src="./SWU Course Web   File Allocation_files/tree_vertline.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_split.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_horizontal.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+ <a href="http://course.swu.ac.th/content.php?cid=2719" title="Assignment 3 Processor scheduling"><span class="inlineEdits" id="menu-2719" title="Assignment 3 Processor scheduling">10.2&nbsp;Assignment 3 Processo...</span></a>
+<br></span>
+
+<span>
+<img src="./SWU Course Web   File Allocation_files/tree_vertline.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_end.gif" alt="" border="0" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_horizontal.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+ <a href="http://course.swu.ac.th/content.php?cid=2720" title="เปรียบเทียบScheduling Policy"><span class="inlineEdits" id="menu-2720" title="เปรียบเทียบScheduling Policy">10.3&nbsp;เปรียบเทียบScheduling...</span></a>
+<br></span>
+
+</div>
+
+<span>
+<img src="./SWU Course Web   File Allocation_files/tree_split.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<a href="javascript:void(0)" onclick="javascript: toggleFolder(&#39;2748&#39;); "><img src="./SWU Course Web   File Allocation_files/tree_expand.gif" id="tree_icon2748" alt="ขยาย" border="0" width="16" height="16" title="ขยาย" class="img-size-tree"></a>
+<span style="cursor:pointer" onclick="javascript: toggleFolder(&#39;2748&#39;); ">
+<span class="inlineEdits" id="menu-2748" title="8. บทที่ 7 การจัดการหน่วยความจำ">11&nbsp;8. บทที่ 7 การจัดการหน...</span></span>
+
+<br></span>
+
+<div id="folder2748" style="display: none; ">
+<span>
+<img src="./SWU Course Web   File Allocation_files/tree_vertline.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_split.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_horizontal.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+ <a href="http://course.swu.ac.th/content.php?cid=2695" title="8. บทที่ 7 การจัดการหน่วยความจำ"><span class="inlineEdits" id="menu-2695" title="8. บทที่ 7 การจัดการหน่วยความจำ">11.1&nbsp;8. บทที่ 7 การจัดการห...</span></a>
+<br></span>
+
+<span>
+<img src="./SWU Course Web   File Allocation_files/tree_vertline.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_end.gif" alt="" border="0" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_horizontal.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+ <a href="http://course.swu.ac.th/content.php?cid=2721" title="แบบฝึกหัดเรื่องการจัดการหน่วยความจำ"><span class="inlineEdits" id="menu-2721" title="แบบฝึกหัดเรื่องการจัดการหน่วยความจำ">11.2&nbsp;แบบฝึกหัดเรื่องการจัด...</span></a>
+<br></span>
+
+</div>
+
+<span>
+<img src="./SWU Course Web   File Allocation_files/tree_split.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<a href="javascript:void(0)" onclick="javascript: toggleFolder(&#39;2749&#39;); "><img src="./SWU Course Web   File Allocation_files/tree_expand.gif" id="tree_icon2749" alt="ขยาย" border="0" width="16" height="16" title="ขยาย" class="img-size-tree"></a>
+<span style="cursor:pointer" onclick="javascript: toggleFolder(&#39;2749&#39;); ">
+<span class="inlineEdits" id="menu-2749" title="** ทบทวนก่อนสอบกลางภาค">12&nbsp;** ทบทวนก่อนสอบกลางภาค</span></span>
+
+<br></span>
+
+<div id="folder2749" style="display: none; ">
+<span>
+<img src="./SWU Course Web   File Allocation_files/tree_vertline.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_split.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_horizontal.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+ <a href="http://course.swu.ac.th/content.php?cid=2696" title="** ทบทวนก่อนสอบกลางภาค"><span class="inlineEdits" id="menu-2696" title="** ทบทวนก่อนสอบกลางภาค">12.1&nbsp;** ทบทวนก่อนสอบกลางภาค</span></a>
+<br></span>
+
+<span>
+<img src="./SWU Course Web   File Allocation_files/tree_vertline.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_end.gif" alt="" border="0" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_horizontal.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+ <a href="http://course.swu.ac.th/content.php?cid=2736" title="ตัวอย่างข้อสอบกลางภาค(เก่า)"><span class="inlineEdits" id="menu-2736" title="ตัวอย่างข้อสอบกลางภาค(เก่า)">12.2&nbsp;ตัวอย่างข้อสอบกลางภาค...</span></a>
+<br></span>
+
+</div>
+
+<span>
+<img src="./SWU Course Web   File Allocation_files/tree_split.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<a href="javascript:void(0)" onclick="javascript: toggleFolder(&#39;2750&#39;); "><img src="./SWU Course Web   File Allocation_files/tree_expand.gif" id="tree_icon2750" alt="ขยาย" border="0" width="16" height="16" title="ขยาย" class="img-size-tree"></a>
+<span style="cursor:pointer" onclick="javascript: toggleFolder(&#39;2750&#39;); ">
+<span class="inlineEdits" id="menu-2750" title="9. สอบกลางภาค">13&nbsp;9. สอบกลางภาค</span></span>
+
+<br></span>
+
+<div id="folder2750" style="display: none; ">
+<span>
+<img src="./SWU Course Web   File Allocation_files/tree_vertline.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_split.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_horizontal.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+ <a href="http://course.swu.ac.th/content.php?cid=2697" title="9. สอบกลางภาค"><span class="inlineEdits" id="menu-2697" title="9. สอบกลางภาค">13.1&nbsp;9. สอบกลางภาค</span></a>
+<br></span>
+
+<span>
+<img src="./SWU Course Web   File Allocation_files/tree_vertline.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_end.gif" alt="" border="0" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_horizontal.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+ <a href="http://course.swu.ac.th/content.php?cid=2722" title="คะแนนสอบกลางภาค"><span class="inlineEdits" id="menu-2722" title="คะแนนสอบกลางภาค">13.2&nbsp;คะแนนสอบกลางภาค</span></a>
+<br></span>
+
+</div>
+
+<span>
+<img src="./SWU Course Web   File Allocation_files/tree_split.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_horizontal.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+ <a href="http://course.swu.ac.th/content.php?cid=2698" title="10. บทที่ 8  การจัดการหน่วยความจำเสมือน"><span class="inlineEdits" id="menu-2698" title="10. บทที่ 8  การจัดการหน่วยความจำเสมือน">14&nbsp;10. บทที่ 8  การจัดการหน่...</span></a>
+<br></span>
+
+<span>
+<img src="./SWU Course Web   File Allocation_files/tree_split.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<a href="javascript:void(0)" onclick="javascript: toggleFolder(&#39;2751&#39;); "><img src="./SWU Course Web   File Allocation_files/tree_collapse.gif" id="tree_icon2751" alt="ยุบลง" border="0" width="16" height="16" title="ยุบลง" class="img-size-tree"></a>
+<span style="cursor:pointer" onclick="javascript: toggleFolder(&#39;2751&#39;); ">
+<span class="inlineEdits" id="menu-2751" title="11. บทที่ 8 (ต่อ) การจัดการหน่วยความจำเสมือน">15&nbsp;11. บทที่ 8 (ต่อ) การจ...</span></span>
+
+<br></span>
+
+<div id="folder2751">
+<span>
+<img src="./SWU Course Web   File Allocation_files/tree_vertline.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_split.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_horizontal.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+ <a href="http://course.swu.ac.th/content.php?cid=2699" title="11. บทที่ 8 (ต่อ) การจัดการหน่วยความจำเสมือน"><span class="inlineEdits" id="menu-2699" title="11. บทที่ 8 (ต่อ) การจัดการหน่วยความจำเสมือน">15.1&nbsp;11. บทที่ 8 (ต่อ) การ...</span></a>
+<br></span>
+
+<span>
+<img src="./SWU Course Web   File Allocation_files/tree_vertline.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_split.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_horizontal.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+ <a href="http://course.swu.ac.th/content.php?cid=2723" title="กรณีศึกษาหน่วยความจำเสมือนของวินโดวส์"><span class="inlineEdits" id="menu-2723" title="กรณีศึกษาหน่วยความจำเสมือนของวินโดวส์">15.2&nbsp;กรณีศึกษาหน่วยความจำเ...</span></a>
+<br></span>
+
+<span>
+<img src="./SWU Course Web   File Allocation_files/tree_vertline.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_split.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_horizontal.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+ <a href="http://course.swu.ac.th/content.php?cid=2724" title="ตัวอย่างการจัดการหน่วยความจำ"><span class="inlineEdits" id="menu-2724" title="ตัวอย่างการจัดการหน่วยความจำ">15.3&nbsp;ตัวอย่างการจัดการหน่ว...</span></a>
+<br></span>
+
+<span>
+<img src="./SWU Course Web   File Allocation_files/tree_vertline.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_split.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_horizontal.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+ <a href="http://course.swu.ac.th/content.php?cid=2725" title="Assignment: Virtual Memory (Paging)"><span class="inlineEdits" id="menu-2725" title="Assignment: Virtual Memory (Paging)">15.4&nbsp;Assignment: Virtual M...</span></a>
+<br></span>
+
+<span>
+<img src="./SWU Course Web   File Allocation_files/tree_vertline.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_split.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_horizontal.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+ <a href="http://course.swu.ac.th/content.php?cid=2726" title="แบบฝึกหัดเรื่อง Virtual Memory"><span class="inlineEdits" id="menu-2726" title="แบบฝึกหัดเรื่อง Virtual Memory">15.5&nbsp;แบบฝึกหัดเรื่อง Virtu...</span></a>
+<br></span>
+
+<span>
+<img src="./SWU Course Web   File Allocation_files/tree_vertline.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_end.gif" alt="" border="0" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_horizontal.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+ <a href="http://course.swu.ac.th/content.php?cid=2727" title="การกำหนดขนาด VM ในวินโดวส์"><span class="inlineEdits" id="menu-2727" title="การกำหนดขนาด VM ในวินโดวส์">15.6&nbsp;การกำหนดขนาด VM ในวิน...</span></a>
+<br></span>
+
+</div>
+
+<span>
+<img src="./SWU Course Web   File Allocation_files/tree_split.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_horizontal.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+ <a href="http://course.swu.ac.th/content.php?cid=2700" title="12. บทที่ 9 การจัดการอุปกรณ์ไอโอ"><span class="inlineEdits" id="menu-2700" title="12. บทที่ 9 การจัดการอุปกรณ์ไอโอ">16&nbsp;12. บทที่ 9 การจัดการอุปก...</span></a>
+<br></span>
+
+<span>
+<img src="./SWU Course Web   File Allocation_files/tree_split.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<a href="javascript:void(0)" onclick="javascript: toggleFolder(&#39;2752&#39;); "><img src="./SWU Course Web   File Allocation_files/tree_expand.gif" id="tree_icon2752" alt="ขยาย" border="0" width="16" height="16" title="ขยาย" class="img-size-tree"></a>
+<span style="cursor:pointer" onclick="javascript: toggleFolder(&#39;2752&#39;); ">
+<span class="inlineEdits" id="menu-2752" title="13. บทที่ 10 การจัดการฮาร์ดดิสก์">17&nbsp;13. บทที่ 10 การจัดการ...</span></span>
+
+<br></span>
+
+<div id="folder2752" style="display: none; ">
+<span>
+<img src="./SWU Course Web   File Allocation_files/tree_vertline.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_split.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_horizontal.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+ <a href="http://course.swu.ac.th/content.php?cid=2701" title="13. บทที่ 10 การจัดการฮาร์ดดิสก์"><span class="inlineEdits" id="menu-2701" title="13. บทที่ 10 การจัดการฮาร์ดดิสก์">17.1&nbsp;13. บทที่ 10 การจัดกา...</span></a>
+<br></span>
+
+<span>
+<img src="./SWU Course Web   File Allocation_files/tree_vertline.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_split.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_horizontal.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+ <a href="http://course.swu.ac.th/content.php?cid=2728" title="อ่านเพิ่มเติม"><span class="inlineEdits" id="menu-2728" title="อ่านเพิ่มเติม">17.2&nbsp;อ่านเพิ่มเติม</span></a>
+<br></span>
+
+<span>
+<img src="./SWU Course Web   File Allocation_files/tree_vertline.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_end.gif" alt="" border="0" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_horizontal.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+ <a href="http://course.swu.ac.th/content.php?cid=2729" title="แบบฝึกหัด การจัดการฮาร์ดดิสก์"><span class="inlineEdits" id="menu-2729" title="แบบฝึกหัด การจัดการฮาร์ดดิสก์">17.3&nbsp;แบบฝึกหัด การจัดการฮา...</span></a>
+<br></span>
+
+</div>
+
+<span>
+<img src="./SWU Course Web   File Allocation_files/tree_split.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<a href="javascript:void(0)" onclick="javascript: toggleFolder(&#39;2753&#39;); "><img src="./SWU Course Web   File Allocation_files/tree_expand.gif" id="tree_icon2753" alt="ขยาย" border="0" width="16" height="16" title="ขยาย" class="img-size-tree"></a>
+<span style="cursor:pointer" onclick="javascript: toggleFolder(&#39;2753&#39;); ">
+<span class="inlineEdits" id="menu-2753" title="14. บทที่ 11 การจัดระบบไฟล์">18&nbsp;14. บทที่ 11 การจัดระบ...</span></span>
+
+<br></span>
+
+<div id="folder2753" style="display: none; ">
+<span>
+<img src="./SWU Course Web   File Allocation_files/tree_vertline.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_split.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_horizontal.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+ <a href="http://course.swu.ac.th/content.php?cid=2702" title="14. บทที่ 11 การจัดระบบไฟล์"><span class="inlineEdits" id="menu-2702" title="14. บทที่ 11 การจัดระบบไฟล์">18.1&nbsp;14. บทที่ 11 การจัดระ...</span></a>
+<br></span>
+
+<span>
+<img src="./SWU Course Web   File Allocation_files/tree_vertline.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_end.gif" alt="" border="0" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_horizontal.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+ <a href="http://course.swu.ac.th/content.php?cid=2730" title="แบบฝึกหัด การจัดระบบไฟล์"><span class="inlineEdits" id="menu-2730" title="แบบฝึกหัด การจัดระบบไฟล์">18.2&nbsp;แบบฝึกหัด การจัดระบบไฟล์</span></a>
+<br></span>
+
+</div>
+
+<span>
+<img src="./SWU Course Web   File Allocation_files/tree_split.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<a href="javascript:void(0)" onclick="javascript: toggleFolder(&#39;2754&#39;); "><img src="./SWU Course Web   File Allocation_files/tree_expand.gif" id="tree_icon2754" alt="ขยาย" border="0" width="16" height="16" title="ขยาย" class="img-size-tree"></a>
+<span style="cursor:pointer" onclick="javascript: toggleFolder(&#39;2754&#39;); ">
+<span class="inlineEdits" id="menu-2754" title="15.บทที่ 12 ความปลอดภัยของระบบคอมพิวเตอร์">19&nbsp;15.บทที่ 12 ความปลอดภั...</span></span>
+
+<br></span>
+
+<div id="folder2754" style="display: none; ">
+<span>
+<img src="./SWU Course Web   File Allocation_files/tree_vertline.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_split.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_horizontal.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+ <a href="http://course.swu.ac.th/content.php?cid=2703" title="15.บทที่ 12 ความปลอดภัยของระบบคอมพิวเตอร์"><span class="inlineEdits" id="menu-2703" title="15.บทที่ 12 ความปลอดภัยของระบบคอมพิวเตอร์">19.1&nbsp;15.บทที่ 12 ความปลอดภ...</span></a>
+<br></span>
+
+<span>
+<img src="./SWU Course Web   File Allocation_files/tree_vertline.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_split.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_horizontal.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+ <a href="http://course.swu.ac.th/content.php?cid=2731" title="Assignment  การป้องกันและรักษาความปลอดภัยของระบบคอมพิวเตอร์"><span class="inlineEdits" id="menu-2731" title="Assignment  การป้องกันและรักษาความปลอดภัยของระบบคอมพิวเตอร์">19.2&nbsp;Assignment  การป้องกั...</span></a>
+<br></span>
+
+<span>
+<img src="./SWU Course Web   File Allocation_files/tree_vertline.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_end.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<a href="javascript:void(0)" onclick="javascript: toggleFolder(&#39;2755&#39;); "><img src="./SWU Course Web   File Allocation_files/tree_expand.gif" id="tree_icon2755" alt="ขยาย" border="0" width="16" height="16" title="ขยาย" class="img-size-tree"></a>
+<span style="cursor:pointer" onclick="javascript: toggleFolder(&#39;2755&#39;); ">
+<span class="inlineEdits" id="menu-2755" title="อ่านเพิ่มเติม">19.3&nbsp;อ่านเพิ่มเติม</span></span>
+
+<br></span>
+
+<div id="folder2755" style="display: none; ">
+<span>
+<img src="./SWU Course Web   File Allocation_files/tree_vertline.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_space.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_split.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_horizontal.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+ <a href="http://course.swu.ac.th/content.php?cid=2732" title="อ่านเพิ่มเติม"><span class="inlineEdits" id="menu-2732" title="อ่านเพิ่มเติม">19.3.1&nbsp;อ่านเพิ่มเติม</span></a>
+<br></span>
+
+<span>
+<img src="./SWU Course Web   File Allocation_files/tree_vertline.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_space.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_split.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_horizontal.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+ <a href="http://course.swu.ac.th/content.php?cid=2741" title="ความรู้เบื้องต้นเกี่ยวกับการพิสูจน์ตัวตน"><span class="inlineEdits" id="menu-2741" title="ความรู้เบื้องต้นเกี่ยวกับการพิสูจน์ตัวตน">19.3.2&nbsp;ความรู้เบื้องต้นเ...</span></a>
+<br></span>
+
+<span>
+<img src="./SWU Course Web   File Allocation_files/tree_vertline.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/clr.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_end.gif" alt="" border="0" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_horizontal.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+ <a href="http://course.swu.ac.th/content.php?cid=7343" title="Windows Security ;WINDOWS2003 server"><span class="inlineEdits" id="menu-7343" title="Windows Security ;WINDOWS2003 server">19.3.3&nbsp;Windows Security...</span></a>
+<br></span>
+
+</div>
+
+</div>
+
+<span>
+<img src="./SWU Course Web   File Allocation_files/tree_split.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<a href="javascript:void(0)" onclick="javascript: toggleFolder(&#39;2756&#39;); "><img src="./SWU Course Web   File Allocation_files/tree_collapse.gif" id="tree_icon2756" alt="ยุบลง" border="0" width="16" height="16" title="ยุบลง" class="img-size-tree"></a>
+<strong><span style="cursor:pointer" onclick="javascript: toggleFolder(&#39;2756&#39;); ">
+<span class="inlineEdits" id="menu-2756" title="16. ทบทวนก่อนสอบ">20&nbsp;16. ทบทวนก่อนสอบ</span></span>
+</strong>
+<br></span>
+
+<div id="folder2756">
+<span>
+<img src="./SWU Course Web   File Allocation_files/tree_vertline.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_split.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_horizontal.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+ <a href="http://course.swu.ac.th/content.php?cid=2704" title="16. ทบทวนก่อนสอบ"><span class="inlineEdits" id="menu-2704" title="16. ทบทวนก่อนสอบ">20.1&nbsp;16. ทบทวนก่อนสอบ</span></a>
+<br></span>
+
+<span>
+<img src="./SWU Course Web   File Allocation_files/tree_vertline.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_end.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<a href="javascript:void(0)" onclick="javascript: toggleFolder(&#39;2757&#39;); "><img src="./SWU Course Web   File Allocation_files/tree_collapse.gif" id="tree_icon2757" alt="ยุบลง" border="0" width="16" height="16" title="ยุบลง" class="img-size-tree"></a>
+<strong><span style="cursor:pointer" onclick="javascript: toggleFolder(&#39;2757&#39;); ">
+<span class="inlineEdits" id="menu-2757" title="ตัวอย่างข้อสอบปลายภาค(เก่า)">20.2&nbsp;ตัวอย่างข้อสอบปลาย...</span></span>
+</strong>
+<br></span>
+
+<div id="folder2757">
+<span>
+<img src="./SWU Course Web   File Allocation_files/tree_vertline.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_space.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_split.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_horizontal.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+ <a href="http://course.swu.ac.th/content.php?cid=2737" title="ตัวอย่างข้อสอบปลายภาค(เก่า)"><span class="inlineEdits" id="menu-2737" title="ตัวอย่างข้อสอบปลายภาค(เก่า)">20.2.1&nbsp;ตัวอย่างข้อสอบปลา...</span></a>
+<br></span>
+
+<span>
+<img src="./SWU Course Web   File Allocation_files/tree_vertline.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_space.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_split.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_horizontal.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+ <a href="http://course.swu.ac.th/content.php?cid=2738" title="Virtual Memory"><span class="inlineEdits" id="menu-2738" title="Virtual Memory">20.2.2&nbsp;Virtual Memory</span></a>
+<br></span>
+
+<span>
+<img src="./SWU Course Web   File Allocation_files/tree_vertline.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_space.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_split.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_horizontal.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+ <a href="http://course.swu.ac.th/content.php?cid=2739" title="Storage"><span class="inlineEdits" id="menu-2739" title="Storage">20.2.3&nbsp;Storage</span></a>
+<br></span>
+
+<span>
+<img src="./SWU Course Web   File Allocation_files/tree_vertline.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/clr.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_end.gif" alt="" border="0" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_horizontal.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<strong><a href="http://course.swu.ac.th/content.php?cid=2740&"><img src="./SWU Course Web   File Allocation_files/clr.gif" alt="คุณอยู่ที่นี่: 20.2.4File Allocation" height="1" width="1" border="0"></a><strong style="color:red" title="File Allocation">
+<a name="menu2740"></a><span class="inlineEdits" id="menu-2740" title="File Allocation">20.2.4&nbsp;File Allocation</span></strong></strong>
+<br></span>
+
+</div>
+
+</div>
+
+<span>
+<img src="./SWU Course Web   File Allocation_files/tree_split.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_horizontal.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+ <a href="http://course.swu.ac.th/content.php?cid=2705" title="17. สอบปลายภาค"><span class="inlineEdits" id="menu-2705" title="17. สอบปลายภาค">21&nbsp;17. สอบปลายภาค</span></a>
+<br></span>
+
+<span>
+<img src="./SWU Course Web   File Allocation_files/tree_split.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_horizontal.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+ <a href="http://course.swu.ac.th/content.php?cid=2706" title="สื่อหนังสือออนไลน์"><span class="inlineEdits" id="menu-2706" title="สื่อหนังสือออนไลน์">22&nbsp;สื่อหนังสือออนไลน์</span></a>
+<br></span>
+
+<span>
+<img src="./SWU Course Web   File Allocation_files/tree_split.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_horizontal.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+ <a href="http://course.swu.ac.th/content.php?cid=2707" title="suggest link"><span class="inlineEdits" id="menu-2707" title="suggest link">23&nbsp;suggest link</span></a>
+<br></span>
+
+<span>
+<img src="./SWU Course Web   File Allocation_files/tree_split.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_horizontal.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+ <a href="http://course.swu.ac.th/content.php?cid=2686" title="เค้าโครงการเรียนการสอน"><span class="inlineEdits" id="menu-2686" title="เค้าโครงการเรียนการสอน">24&nbsp;เค้าโครงการเรียนการสอน</span></a>
+<br></span>
+
+<span>
+<img src="./SWU Course Web   File Allocation_files/tree_end.gif" alt="" border="0" class="img-size-tree">
+<img src="./SWU Course Web   File Allocation_files/tree_horizontal.gif" alt="" border="0" width="16" height="16" class="img-size-tree">
+ <a href="http://course.swu.ac.th/content.php?cid=7079" title="link"><span class="inlineEdits" id="menu-7079" title="link">25&nbsp;link</span></a>
+<br></span>
+
+</div>
+
+
+<script type="text/javascript">
+
+function initContentMenu() {
+	tree_collapse_icon = "/images/tree/tree_collapse.gif";
+	tree_expand_icon = "/images/tree/tree_expand.gif";
+		
+
+	if (getcookie("c225_2742") == "1")
+	{
+		jQuery("#folder"+2742).show();
+		jQuery("#tree_icon"+2742).attr("src", tree_collapse_icon);
+		jQuery("#tree_icon"+2742).attr("alt", "ยุบลง");
+		jQuery("#tree_icon"+2742).attr("title", "ยุบลง");
+	}
+	else
+	{
+		jQuery("#folder"+2742).hide();
+		jQuery("#tree_icon"+2742).attr("src", tree_expand_icon);
+		jQuery("#tree_icon"+2742).attr("alt", "ขยาย");
+		jQuery("#tree_icon"+2742).attr("title", "ขยาย");
+	}
+
+	if (getcookie("c225_2743") == "1")
+	{
+		jQuery("#folder"+2743).show();
+		jQuery("#tree_icon"+2743).attr("src", tree_collapse_icon);
+		jQuery("#tree_icon"+2743).attr("alt", "ยุบลง");
+		jQuery("#tree_icon"+2743).attr("title", "ยุบลง");
+	}
+	else
+	{
+		jQuery("#folder"+2743).hide();
+		jQuery("#tree_icon"+2743).attr("src", tree_expand_icon);
+		jQuery("#tree_icon"+2743).attr("alt", "ขยาย");
+		jQuery("#tree_icon"+2743).attr("title", "ขยาย");
+	}
+
+	if (getcookie("c225_2744") == "1")
+	{
+		jQuery("#folder"+2744).show();
+		jQuery("#tree_icon"+2744).attr("src", tree_collapse_icon);
+		jQuery("#tree_icon"+2744).attr("alt", "ยุบลง");
+		jQuery("#tree_icon"+2744).attr("title", "ยุบลง");
+	}
+	else
+	{
+		jQuery("#folder"+2744).hide();
+		jQuery("#tree_icon"+2744).attr("src", tree_expand_icon);
+		jQuery("#tree_icon"+2744).attr("alt", "ขยาย");
+		jQuery("#tree_icon"+2744).attr("title", "ขยาย");
+	}
+
+	if (getcookie("c225_2745") == "1")
+	{
+		jQuery("#folder"+2745).show();
+		jQuery("#tree_icon"+2745).attr("src", tree_collapse_icon);
+		jQuery("#tree_icon"+2745).attr("alt", "ยุบลง");
+		jQuery("#tree_icon"+2745).attr("title", "ยุบลง");
+	}
+	else
+	{
+		jQuery("#folder"+2745).hide();
+		jQuery("#tree_icon"+2745).attr("src", tree_expand_icon);
+		jQuery("#tree_icon"+2745).attr("alt", "ขยาย");
+		jQuery("#tree_icon"+2745).attr("title", "ขยาย");
+	}
+
+	if (getcookie("c225_2746") == "1")
+	{
+		jQuery("#folder"+2746).show();
+		jQuery("#tree_icon"+2746).attr("src", tree_collapse_icon);
+		jQuery("#tree_icon"+2746).attr("alt", "ยุบลง");
+		jQuery("#tree_icon"+2746).attr("title", "ยุบลง");
+	}
+	else
+	{
+		jQuery("#folder"+2746).hide();
+		jQuery("#tree_icon"+2746).attr("src", tree_expand_icon);
+		jQuery("#tree_icon"+2746).attr("alt", "ขยาย");
+		jQuery("#tree_icon"+2746).attr("title", "ขยาย");
+	}
+
+	if (getcookie("c225_2747") == "1")
+	{
+		jQuery("#folder"+2747).show();
+		jQuery("#tree_icon"+2747).attr("src", tree_collapse_icon);
+		jQuery("#tree_icon"+2747).attr("alt", "ยุบลง");
+		jQuery("#tree_icon"+2747).attr("title", "ยุบลง");
+	}
+	else
+	{
+		jQuery("#folder"+2747).hide();
+		jQuery("#tree_icon"+2747).attr("src", tree_expand_icon);
+		jQuery("#tree_icon"+2747).attr("alt", "ขยาย");
+		jQuery("#tree_icon"+2747).attr("title", "ขยาย");
+	}
+
+	if (getcookie("c225_2748") == "1")
+	{
+		jQuery("#folder"+2748).show();
+		jQuery("#tree_icon"+2748).attr("src", tree_collapse_icon);
+		jQuery("#tree_icon"+2748).attr("alt", "ยุบลง");
+		jQuery("#tree_icon"+2748).attr("title", "ยุบลง");
+	}
+	else
+	{
+		jQuery("#folder"+2748).hide();
+		jQuery("#tree_icon"+2748).attr("src", tree_expand_icon);
+		jQuery("#tree_icon"+2748).attr("alt", "ขยาย");
+		jQuery("#tree_icon"+2748).attr("title", "ขยาย");
+	}
+
+	if (getcookie("c225_2749") == "1")
+	{
+		jQuery("#folder"+2749).show();
+		jQuery("#tree_icon"+2749).attr("src", tree_collapse_icon);
+		jQuery("#tree_icon"+2749).attr("alt", "ยุบลง");
+		jQuery("#tree_icon"+2749).attr("title", "ยุบลง");
+	}
+	else
+	{
+		jQuery("#folder"+2749).hide();
+		jQuery("#tree_icon"+2749).attr("src", tree_expand_icon);
+		jQuery("#tree_icon"+2749).attr("alt", "ขยาย");
+		jQuery("#tree_icon"+2749).attr("title", "ขยาย");
+	}
+
+	if (getcookie("c225_2750") == "1")
+	{
+		jQuery("#folder"+2750).show();
+		jQuery("#tree_icon"+2750).attr("src", tree_collapse_icon);
+		jQuery("#tree_icon"+2750).attr("alt", "ยุบลง");
+		jQuery("#tree_icon"+2750).attr("title", "ยุบลง");
+	}
+	else
+	{
+		jQuery("#folder"+2750).hide();
+		jQuery("#tree_icon"+2750).attr("src", tree_expand_icon);
+		jQuery("#tree_icon"+2750).attr("alt", "ขยาย");
+		jQuery("#tree_icon"+2750).attr("title", "ขยาย");
+	}
+
+	if (getcookie("c225_2751") == "1")
+	{
+		jQuery("#folder"+2751).show();
+		jQuery("#tree_icon"+2751).attr("src", tree_collapse_icon);
+		jQuery("#tree_icon"+2751).attr("alt", "ยุบลง");
+		jQuery("#tree_icon"+2751).attr("title", "ยุบลง");
+	}
+	else
+	{
+		jQuery("#folder"+2751).hide();
+		jQuery("#tree_icon"+2751).attr("src", tree_expand_icon);
+		jQuery("#tree_icon"+2751).attr("alt", "ขยาย");
+		jQuery("#tree_icon"+2751).attr("title", "ขยาย");
+	}
+
+	if (getcookie("c225_2752") == "1")
+	{
+		jQuery("#folder"+2752).show();
+		jQuery("#tree_icon"+2752).attr("src", tree_collapse_icon);
+		jQuery("#tree_icon"+2752).attr("alt", "ยุบลง");
+		jQuery("#tree_icon"+2752).attr("title", "ยุบลง");
+	}
+	else
+	{
+		jQuery("#folder"+2752).hide();
+		jQuery("#tree_icon"+2752).attr("src", tree_expand_icon);
+		jQuery("#tree_icon"+2752).attr("alt", "ขยาย");
+		jQuery("#tree_icon"+2752).attr("title", "ขยาย");
+	}
+
+	if (getcookie("c225_2753") == "1")
+	{
+		jQuery("#folder"+2753).show();
+		jQuery("#tree_icon"+2753).attr("src", tree_collapse_icon);
+		jQuery("#tree_icon"+2753).attr("alt", "ยุบลง");
+		jQuery("#tree_icon"+2753).attr("title", "ยุบลง");
+	}
+	else
+	{
+		jQuery("#folder"+2753).hide();
+		jQuery("#tree_icon"+2753).attr("src", tree_expand_icon);
+		jQuery("#tree_icon"+2753).attr("alt", "ขยาย");
+		jQuery("#tree_icon"+2753).attr("title", "ขยาย");
+	}
+
+	if (getcookie("c225_2754") == "1")
+	{
+		jQuery("#folder"+2754).show();
+		jQuery("#tree_icon"+2754).attr("src", tree_collapse_icon);
+		jQuery("#tree_icon"+2754).attr("alt", "ยุบลง");
+		jQuery("#tree_icon"+2754).attr("title", "ยุบลง");
+	}
+	else
+	{
+		jQuery("#folder"+2754).hide();
+		jQuery("#tree_icon"+2754).attr("src", tree_expand_icon);
+		jQuery("#tree_icon"+2754).attr("alt", "ขยาย");
+		jQuery("#tree_icon"+2754).attr("title", "ขยาย");
+	}
+
+	if (getcookie("c225_2755") == "1")
+	{
+		jQuery("#folder"+2755).show();
+		jQuery("#tree_icon"+2755).attr("src", tree_collapse_icon);
+		jQuery("#tree_icon"+2755).attr("alt", "ยุบลง");
+		jQuery("#tree_icon"+2755).attr("title", "ยุบลง");
+	}
+	else
+	{
+		jQuery("#folder"+2755).hide();
+		jQuery("#tree_icon"+2755).attr("src", tree_expand_icon);
+		jQuery("#tree_icon"+2755).attr("alt", "ขยาย");
+		jQuery("#tree_icon"+2755).attr("title", "ขยาย");
+	}
+
+	if (getcookie("c225_2756") == "1")
+	{
+		jQuery("#folder"+2756).show();
+		jQuery("#tree_icon"+2756).attr("src", tree_collapse_icon);
+		jQuery("#tree_icon"+2756).attr("alt", "ยุบลง");
+		jQuery("#tree_icon"+2756).attr("title", "ยุบลง");
+	}
+	else
+	{
+		jQuery("#folder"+2756).hide();
+		jQuery("#tree_icon"+2756).attr("src", tree_expand_icon);
+		jQuery("#tree_icon"+2756).attr("alt", "ขยาย");
+		jQuery("#tree_icon"+2756).attr("title", "ขยาย");
+	}
+
+	if (getcookie("c225_2757") == "1")
+	{
+		jQuery("#folder"+2757).show();
+		jQuery("#tree_icon"+2757).attr("src", tree_collapse_icon);
+		jQuery("#tree_icon"+2757).attr("alt", "ยุบลง");
+		jQuery("#tree_icon"+2757).attr("title", "ยุบลง");
+	}
+	else
+	{
+		jQuery("#folder"+2757).hide();
+		jQuery("#tree_icon"+2757).attr("src", tree_expand_icon);
+		jQuery("#tree_icon"+2757).attr("alt", "ขยาย");
+		jQuery("#tree_icon"+2757).attr("title", "ขยาย");
+	}
+
+	jQuery("#folder"+2756).show();
+	jQuery("#tree_icon"+2756).attr("src", tree_collapse_icon);
+	jQuery("#tree_icon"+2756).attr("alt", "ยุบลง");
+	setcookie("c225_2756", "1", 1);
+
+	jQuery("#folder"+2757).show();
+	jQuery("#tree_icon"+2757).attr("src", tree_collapse_icon);
+	jQuery("#tree_icon"+2757).attr("alt", "ยุบลง");
+	setcookie("c225_2757", "1", 1);
+}
+function switchEditMode() {
+	title_edit = "[ enter_edit_mode ]";
+	img_edit = "/images/medit.gif";
+	
+	title_view = "[ exit_edit_mode ]";
+	img_view = "/images/mlock.gif";
+	
+	if (jQuery("#img_switch_edit_mode").attr("src") == img_edit)
+	{
+		jQuery("#img_switch_edit_mode").attr("src", img_view);
+		jQuery("#img_switch_edit_mode").attr("alt", title_view);
+		jQuery("#img_switch_edit_mode").attr("title", title_view);
+		inlineEditsSetup();
+	}
+	else
+	{ // refresh the content navigation to exit the edit mode
+		jQuery.post("/mods/_core/content/refresh_content_nav.php", {}, 
+					function(data) {jQuery("#editable_table").replaceWith(data); initContentMenu();});
+	}
+}
+
+function inlineEditsSetup() {
+	jQuery("#editable_table").find(".inlineEdits").each(function() {
+		jQuery(this).text(jQuery(this).attr("title"));
+	});
+	
+	var tableEdit = fluid.inlineEdits("#editable_table", {
+		selectors : {
+			text : ".inlineEdits",
+			editables : "span:has(span.inlineEdits)"
+		},
+		defaultViewText: "",
+		applyEditPadding: false,
+		useTooltip: true,
+		listeners: {
+			afterFinishEdit : function (newValue, oldValue, editNode, viewNode) {
+				if (newValue != oldValue) 
+				{
+					rtn = jQuery.post("/mods/_core/content/menu_inline_editor_submit.php", { "field":viewNode.id, "value":newValue }, 
+						          function(data) {}, "json");
+				}
+			}
+		}
+	});
+
+	jQuery(".fl-inlineEdit-edit").css("width", "80px")
+
+};
+
+initContentMenu();
+</script>
+</div></div></div>
+
+<script language="javascript" type="text/javascript">
+if (getcookie("m_ไกด์ไลน์") == "0")
+{
+	jQuery("#menu_ไกด์ไลน์").hide();
+}
+else
+{
+	jQuery("#menu_ไกด์ไลน์").show();
+}
+</script>			
+<br>
+<script language="javascript" type="text/javascript">
+	printSubmenuHeader("เรื่องที่เกี่ยวข้อง");
+</script><h4 class="box">	<input src="./SWU Course Web   File Allocation_files/mswitch_minus.gif" onclick="elementToggle(this, &#39;เรื่องที่เกี่ยวข้อง&#39;); return false;" alt="ซ่อน เรื่องที่เกี่ยวข้อง" title="ซ่อน เรื่องที่เกี่ยวข้อง" style="float:right" type="image"> เรื่องที่เกี่ยวข้อง</h4>
+
+
+<div class="box" id="menu_เรื่องที่เกี่ยวข้อง">
+	<em>ไม่มี</em></div>
+
+<script language="javascript" type="text/javascript">
+if (getcookie("m_เรื่องที่เกี่ยวข้อง") == "0")
+{
+	jQuery("#menu_เรื่องที่เกี่ยวข้อง").hide();
+}
+else
+{
+	jQuery("#menu_เรื่องที่เกี่ยวข้อง").show();
+}
+</script>			
+<br>
+<script language="javascript" type="text/javascript">
+	printSubmenuHeader("กำลังใช้งาน");
+</script><h4 class="box">	<input src="./SWU Course Web   File Allocation_files/mswitch_minus.gif" onclick="elementToggle(this, &#39;กำลังใช้งาน&#39;); return false;" alt="ซ่อน กำลังใช้งาน" title="ซ่อน กำลังใช้งาน" style="float:right" type="image"> กำลังใช้งาน</h4>
+
+
+<div class="box" id="menu_กำลังใช้งาน">
+	<ul style="padding: 0px; list-style: none;"><li style="padding: 3px 0px;"><a href="http://course.swu.ac.th/profile.php?id=283162" class="user">กมลชนก  นราวุธ</a></li><li style="padding: 3px 0px;"><a href="http://course.swu.ac.th/profile.php?id=282672" class="user">ภูมิ  รถกิจ</a></li><li style="padding: 3px 0px;"><a href="http://course.swu.ac.th/profile.php?id=1689" class="user instructor" title="ผู้สอน">รุ่งระพี  กรานคำยี</a></li></ul><em>แสดงเฉพาะสมาชิก</em></div>
+
+<script language="javascript" type="text/javascript">
+if (getcookie("m_กำลังใช้งาน") == "0")
+{
+	jQuery("#menu_กำลังใช้งาน").hide();
+}
+else
+{
+	jQuery("#menu_กำลังใช้งาน").show();
+}
+</script>	<div style="position:absolute; bottom:0px;">&nbsp;</div>
+
+			<script type="text/javascript">
+			//<![CDATA[
+				document.writeln('</div>');
+			//]]>
+			</script></div>
+
+		</div>
+	
+	<div id="contentcolumn_shiftright">
+
+				<div id="menutoggle">
+
+							<script type="text/javascript" language="javascript">
+				//<![CDATA[
+				var state = getcookie("side-menu");
+				if (state && (state == 'none')) {
+					showTocToggle("side-menu", "แสดง","ซ่อน", "", "show");
+				} else {
+					document.getElementById('contentcolumn').id="contentcolumn_shiftright";
+					showTocToggle("side-menu", "แสดง","ซ่อน", "", "hide");
+				}
+				//]]>
+				</script><a href="javascript:toggleToc('side-menu')"><span id="side-menushowlink" style="display:none;">แสดง</span><span id="side-menuhidelink">ซ่อน</span></a>
+
+					</div>
+
+		<div id="sequence-links">
+										<a href="http://course.swu.ac.th/index.php" title="หัวเรื่องที่ผ่านมา: หน้าแรก Alt+," accesskey=","><img src="./SWU Course Web   File Allocation_files/previous.gif" border="0" alt="หัวเรื่องที่ผ่านมา: หน้าแรก Alt+," class="img-size-ascdesc"></a>
+												&nbsp;
+		</div>
+		
+	<!-- the page title -->
+	<a name="content" title="เนื้อหา"></a>
+	<h2 class="page-title">File Allocation</h2>
+	
+	
+<!-- the main navigation. in our case, tabs -->
+
+
+
+<div id="content-text">
+	 <p>III. พิจารณาข้อมูลจากตารางต่อไปนี้และตอบคำถาม&nbsp;&nbsp;&nbsp; <span style="text-decoration: underline;">10 คะแนน</span></p>
+<p>FAT File System Cluster Sizes</p>
+<table border="1" cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+<td valign="top">
+<p align="center">Partition Size</p>
+</td>
+<td valign="top">
+<p align="center">Cluster Size </p>
+</td>
+<td valign="top">
+<p align="center">FAT Type</p>
+</td>
+</tr>
+<tr>
+<td valign="top">
+<p>0 MB - less than 16MB</p>
+</td>
+<td valign="top">
+<p>4,096 bytes</p>
+</td>
+<td valign="top">
+<p>12-bit</p>
+</td>
+</tr>
+<tr>
+<td valign="top">
+<p>16 MB - 128MB</p>
+</td>
+<td valign="top">
+<p>2,048 bytes</p>
+</td>
+<td valign="top">
+<p>16-bit</p>
+</td>
+</tr>
+<tr>
+<td valign="top">
+<p>128 MB - 256 MB</p>
+</td>
+<td valign="top">
+<p>4,096 bytes</p>
+</td>
+<td valign="top">
+<p>16-bit</p>
+</td>
+</tr>
+<tr>
+<td valign="top">
+<p>256 MB - 512 MB</p>
+</td>
+<td valign="top">
+<p>8,192 bytes</p>
+</td>
+<td valign="top">
+<p>16-bit</p>
+</td>
+</tr>
+<tr>
+<td valign="top">
+<p>512 MB - 1024 MB</p>
+</td>
+<td valign="top">
+<p>16,384 bytes</p>
+</td>
+<td valign="top">
+<p>16-bit</p>
+</td>
+</tr>
+<tr>
+<td valign="top">
+<p>1024 MB - 2048 MB</p>
+</td>
+<td valign="top">
+<p>32,768 bytes</p>
+</td>
+<td valign="top">
+<p>16-bit</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<p>ถ้าเราใช้ฮาร์ดดิสก์โดยจัดทำพาร์ทิชันขนาด 2 GB และใช้การจัดการไฟล์ตามตารางข้างต้น&nbsp; ถ้าท่านทำการบันทึกไฟล์ 50 ไฟล์ที่แตกต่างกัน โดยทุกไฟล์ประกอบด้วยข้อมูลจำนวน 1024 ไบต์เท่ากัน &nbsp;</p>
+<p>ก.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; คลัสเตอร์(cluster) หมายถึง ………………………………………………………</p>
+<p>……………………………………………………………………………………………….</p>
+<p>ข.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; จำนวนคลัสเตอร์ทั้งหมดที่ใช้บันทึกข้อมูล 50 ไฟล์เท่ากับ ........ คลัสเตอร์ </p>
+<p>ค.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; เนื้อที่สูญเปล่า (fragmentation) จากการจัดสรรสำหรับ 50 ไฟล์นี้เท่ากับ ......... &nbsp;ไบต์</p>
+<p>ง.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; อธิบายเหตุผลในข้อ ค ..................................................... .................................................................................... </p>
+<p>จ.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; แสดงวิธีการคำนวณขนาดของพาร์ทิชันของฮาร์ดดิสก์</p>
+<p>ขนาดของพาร์ทิชัน=........................................................</p>
+<p>ฉ.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ข้อเสียของการกำหนดให้คลัสเตอร์มีขนาดใหญ่คือ <br>...................................................................................</p>
+<p>ช.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ข้อดีของการกำหนดให้คลัสเตอร์มีขนาดใหญ่คือ <br>...................................................................................</p>
+<p>ซ.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; จำนวนคลัสเตอร์ทั้งหมดในพาร์ทิชันสำหรับ FAT 16 เท่ากับ .............. &nbsp;&nbsp;คลัสเตอร์</p>
+<p>ฌ.&nbsp;&nbsp;&nbsp;&nbsp; กรณีของ FAT 32 ซึ่งใช้ 28 บิตสำหรับอ้างอิงคลัสเตอร์ ถ้าขนาดของคลัสเตอร์เท่ากับ 4 K ขนาดของพาร์ทิชันเท่ากับ …………..</p></div>
+
+
+
+
+<div id="content-info">
+	แก้ไขล่าสุด: พฤหัสบดี 9 มิ.ย., 2011 - 10:21 ปรับปรุงใหม่: 0 วันที่เริ่มใช้: อังคาร 5 ต.ค., 2010 - 01:00
+</div><script language="javascript" type="text/javascript">
+//<!--
+var selected;
+function rowselect(obj) {
+	obj.className = 'selected';
+	if (selected && selected != obj.id)
+		document.getElementById(selected).className = '';
+	selected = obj.id;
+}
+function rowselectbox(obj, checked, handler) {
+	var functionDemo = new Function(handler + ";");
+	functionDemo();
+
+	if (checked)
+		obj.className = 'selected';
+	else
+		obj.className = '';
+}
+//-->
+</script>
+
+					<div style="clear: left; text-align:right;" id="gototop">		
+				<br>
+				<span style="font-size:smaller;padding-right:3px;"><a href="http://course.swu.ac.th/content.php?cid=2740#content" title="ไปยังเนื้อหา Alt-c">ไปด้านบน				<img src="./SWU Course Web   File Allocation_files/top.gif" alt="ไปด้านบน Alt-c" border="0"> 
+				
+				</a>	</span>
+			</div>  
+		 
+
+	</div>
+</div>
+
+<div id="footer">
+	<br><br>
+	<div align="center" id="lang" style="clear: left"><br><small><label for="lang">แปลเป็น </label></small><a href="http://course.swu.ac.th/content.php?cid=2740&amp;lang=en">English</a>  | <strong>Thai</strong></div>	<div align="center">	<small>ลิขสิทธิ์ต้นฉบับของเอติวเตอร์ สงวนลิขสิทธิ์ © 2001-2007. <a href="http://course.swu.ac.th/about.php">เกี่ยวกับ ATutor</a>.<br>
+			<span id="howto">สำหรับการช่วยเหลือทั่วไปในการใช้งาน ดูได้ที่ <a href="http://course.swu.ac.th/documentation/index_list.php?lang=th" onclick="poptastic(&#39;/documentation/index_list.php?lang=th&#39;); return false;" target="_new"><em>สมุดคู่มือ เอติวเตอร์</em></a>.</span>
+		</small>
+</div></div>
+</div> <!-- end page wrapper -->
+
+<div id="tooltip" style="display: none; "><h3></h3><div class="body"></div><div class="url"></div></div></body></html>
